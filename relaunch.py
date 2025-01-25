@@ -17,9 +17,9 @@ def get_pid(process_name: str) -> int:
     # -f - use full process name to match
     cmd = ['pgrep', '-f', process_name]
 
-    proc = sub.Popen(cmd, stdout=sub.PIPE)
+    with sub.Popen(cmd, stdout=sub.PIPE) as proc:
+        result = proc.communicate()[0]
 
-    result = proc.communicate()[0]
     result = result.decode().strip()
     #print(result.__repr__())
 
@@ -41,9 +41,8 @@ def kill_process(pid: int | str) -> bool:
     '''
     cmd = ['kill', str(pid)]
 
-    proc = sub.Popen(cmd, stdout=sub.PIPE, stderr=sub.PIPE)
-
-    err = proc.communicate()[1]
+    with sub.Popen(cmd, stdout=sub.PIPE, stderr=sub.PIPE) as proc:
+        err = proc.communicate()[1]
 
     if err:
         return 1
