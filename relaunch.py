@@ -1,10 +1,10 @@
 '''
 Relaunch python process by its command.
+v1.0.2
 '''
 
 from typing import Iterable
 import subprocess as sub
-import sys
 
 
 def get_pid(process_name: str) -> int:
@@ -21,7 +21,6 @@ def get_pid(process_name: str) -> int:
         result = proc.communicate()[0]
 
     result = result.decode().strip()
-    #print(result.__repr__())
 
     if not result:
         raise ValueError(f'Process name {process_name} not found.')
