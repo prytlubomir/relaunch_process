@@ -1,6 +1,6 @@
 '''
 Relaunch python process by its command.
-v1.0.2
+v1.1.0
 '''
 
 from typing import Iterable
@@ -62,7 +62,7 @@ def launch_process(command: str | Iterable) -> int:
 
 def main():
     '''Relaunch process'''
-    command = 'python3.11 server.py'
+    command = input('Enter a command to relaunch: ')
     pid = get_pid(command)
     kill_process(pid)
     new_pid = launch_process(command)
