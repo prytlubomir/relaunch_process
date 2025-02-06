@@ -10,18 +10,24 @@ class TestRelaunch(unittest.TestCase):
     dummy = ['python3.11', 'server.py']
 
     def setUp(self):
+        self.pid = self.start_process(self.dummy)
+        warnings.simplefilter('ignore', category=ResourceWarning)
+
+    def tearDown(self):
+        self.kill_process(self.pid)
+    
+    def start_process(self, cmd: list | str) -> int:
         proc = sub.Popen(
-            self.dummy,
+            cmd,
             close_fds=True,
             stdout=sub.PIPE,
             stderr=sub.PIPE,
             shell=True
         )
-        self.pid = proc.pid
-        warnings.simplefilter('ignore', category=ResourceWarning)
-
-    def tearDown(self):
-        with sub.Popen(['kill', str(self.pid)]) as proc:
+        return proc.pid
+    
+    def kill_process(self, pid: int) -> None:
+        with sub.Popen(['kill', str(pid)]) as _:
             pass
 
 
