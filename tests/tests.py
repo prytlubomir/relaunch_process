@@ -35,6 +35,14 @@ class TestRelaunch(unittest.TestCase):
 
 class TestGetPid(TestRelaunch):
 
+    def setUp(self):
+        super().setUp()
+        self.false_pid = self.start_process([*self.dummy, '2'])
+
+    def tearDown(self):
+        super().tearDown()
+        self.kill_process(self.false_pid)
+
     def test_get_pid(self):
         pid = relaunch.get_pid(' '.join(self.dummy))
         self.assertEqual(pid, self.pid)
