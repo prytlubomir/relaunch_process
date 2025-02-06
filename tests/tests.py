@@ -15,7 +15,7 @@ class TestRelaunch(unittest.TestCase):
 
     def tearDown(self):
         self.kill_process(self.pid)
-    
+
     def start_process(self, cmd: list | str) -> int:
         proc = sub.Popen(
             cmd,
@@ -25,7 +25,7 @@ class TestRelaunch(unittest.TestCase):
             shell=True
         )
         return proc.pid
-    
+
     def kill_process(self, pid: int) -> None:
         with sub.Popen(['kill', str(pid)]) as _:
             pass
