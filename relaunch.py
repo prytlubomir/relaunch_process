@@ -1,6 +1,6 @@
 '''
 Relaunch python process by its command.
-v1.1.0
+v1.1.1
 '''
 
 from typing import Iterable
@@ -23,7 +23,7 @@ def get_pid(process_name: str) -> int:
     result = result.decode().strip()
 
     if not result:
-        raise ValueError(f'Process name {process_name} not found.')
+        raise ValueError(f'No process with name "{process_name}".')
 
     return int(result)
 
