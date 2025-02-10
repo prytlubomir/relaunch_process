@@ -1,3 +1,5 @@
+import os
+
 import unittest
 import warnings
 import subprocess as sub
@@ -24,7 +26,10 @@ class TestRelaunch(unittest.TestCase):
             stderr=sub.PIPE,
             shell=True
         )
-        return proc.pid
+        while True:
+            if os.path.exists(f'/proc/{proc.pid}'):
+                return proc.pid
+            print('It does not exists!')
 
     def kill_process(self, pid: int) -> None:
         with sub.Popen(['kill', str(pid)]) as _:
