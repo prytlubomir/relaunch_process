@@ -7,7 +7,7 @@ from typing import Iterable
 import subprocess as sub
 
 
-def get_pid(process_name: str) -> int:
+def get_pid(process_name: str) -> list:
     '''
     get_pid(process_name: str) -> int:
 
@@ -15,7 +15,8 @@ def get_pid(process_name: str) -> int:
     '''
     # pgrep - displays processes selected by regex
     # -f - use full process name to match
-    cmd = ['pgrep', '-f', process_name]
+    # -x - search for the exact name
+    cmd = ['pgrep', '-f', f'{process_name}']
 
     with sub.Popen(cmd, stdout=sub.PIPE) as proc:
         result = proc.communicate()[0]
@@ -25,7 +26,7 @@ def get_pid(process_name: str) -> int:
     if not result:
         raise ValueError(f'No process with name "{process_name}".')
 
-    return int(result)
+    return list(map(int, result.split('\n')))
 
 
 def kill_process(pid: int | str) -> bool:
@@ -60,10 +61,72 @@ def launch_process(command: str | Iterable) -> int:
     return pid
 
 
+def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: str='-') -> None:
+
+    VERTICAL_GAP = 2
+
+    print(title)
+    print(sep*len(title))
+
+    sizes: Iterable[int] = [max(size, key=lambda x: len(str(x))) for size in data]
+
+    sections = []
+    for i, topic in enumerate(topics):
+        string = topic
+        gap = sizes[i] - len(string) + VERTICAL_GAP
+        sections.append(string+gap)
+
+    print(''.join(sections))
+    print(sep*len(title))
+
+    for row_ in data:
+        row = []
+        for i, coll in enumerate(row_):
+            string = coll
+            gap = sizes[i] - len(string) + VERTICAL_GAP
+            row.append(string+gap)
+        print(''.join(row))
+
+
+def select_process(pids: list) -> int:
+
+    title  = "There's multiple processes with the same name"
+    topics = ["ID", "Process Uptime"]
+    sep    = '-'
+
+    table = []
+
+    for i, pid_ in enumerate(pids):
+        with sub.Popen(['ps', '-p', int(pid_), '-o', 'time'], stdout=sub.PIPE) as proc:
+
+            uptime = proc.communicate()[0]
+            uptime = uptime.decode()
+
+            uptime = uptime.split('\n')[1]
+            uptime = uptime.strip()
+
+            table.append([i, uptime])
+
+    _draw_table(topics, table, title, sep=sep)
+
+    while True:
+        pid = input("Enter ID: ")
+        if pid.isalnum():
+            if len(pids)-1 <= int(pid):
+                return pids[int(pid)]
+        print("Incorrect ID! Try again.")
+
+
 def main():
     '''Relaunch process'''
     command = input('Enter a command to relaunch: ')
-    pid = get_pid(command)
+    pids = get_pid(command)
+
+    pid = pids[0]
+
+    if len(pids) > 1:
+        pid = select_process(pids)
+
     kill_process(pid)
     new_pid = launch_process(command)
 
