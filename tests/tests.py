@@ -25,7 +25,6 @@ class TestRelaunch(unittest.TestCase):
             close_fds=True,
             stdout=sub.PIPE,
             stderr=sub.PIPE,
-            shell=True
         )
         while True:
             if os.path.exists(f'/proc/{proc.pid}'):
@@ -50,7 +49,6 @@ class TestGetPid(TestRelaunch):
         self.kill_process(self.false_pid)
 
     def test_get_pid(self):
-        time.sleep(15)
         pid = relaunch.get_pid(' '.join(self.dummy))
         self.assertEqual(pid, [self.pid])
 
