@@ -96,7 +96,7 @@ def select_process(pids: list) -> int:
 
     # generate list with [id, uptime]
     table = []
-    for id, pid_ in enumerate(pids):
+    for proc_id, pid_ in enumerate(pids):
         with sub.Popen(['ps', '-p', int(pid_), '-o', 'time'], stdout=sub.PIPE) as proc:
 
             uptime = proc.communicate()[0]
@@ -105,7 +105,7 @@ def select_process(pids: list) -> int:
             uptime = uptime.split('\n')[1]
             uptime = uptime.strip()
 
-            table.append([id, uptime])
+            table.append([proc_id, uptime])
 
     _draw_table(topics, table, title, sep=sep)
 
