@@ -71,9 +71,9 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
     sizes: Iterable[int] = [max(size, key=lambda x: len(str(x))) for size in data]
 
     sections = []
-    for i, topic in enumerate(topics):
+    for index, topic in enumerate(topics):
         string = topic
-        gap = sizes[i] - len(string) + VERTICAL_GAP
+        gap = sizes[index] - len(string) + VERTICAL_GAP
         sections.append(string+gap)
 
     print(''.join(sections))
@@ -81,9 +81,9 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
 
     for row_ in data:
         row = []
-        for i, coll in enumerate(row_):
+        for index, coll in enumerate(row_):
             string = coll
-            gap = sizes[i] - len(string) + VERTICAL_GAP
+            gap = sizes[index] - len(string) + VERTICAL_GAP
             row.append(string+gap)
         print(''.join(row))
 
@@ -94,9 +94,9 @@ def select_process(pids: list) -> int:
     topics = ["ID", "Process Uptime"]
     sep    = '-'
 
+    # generate list with [id, uptime]
     table = []
-
-    for i, pid_ in enumerate(pids):
+    for id, pid_ in enumerate(pids):
         with sub.Popen(['ps', '-p', int(pid_), '-o', 'time'], stdout=sub.PIPE) as proc:
 
             uptime = proc.communicate()[0]
@@ -105,7 +105,7 @@ def select_process(pids: list) -> int:
             uptime = uptime.split('\n')[1]
             uptime = uptime.strip()
 
-            table.append([i, uptime])
+            table.append([id, uptime])
 
     _draw_table(topics, table, title, sep=sep)
 
