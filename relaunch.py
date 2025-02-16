@@ -16,7 +16,7 @@ def get_pid(process_name: str) -> list:
     # pgrep - displays processes selected by regex
     # -f - use full process name to match
     # -x - search for the exact name
-    cmd = ['pgrep', '-f', f'{process_name}']
+    cmd = ['pgrep', '-f', '-x', f'{process_name}']
 
     with sub.Popen(cmd, stdout=sub.PIPE) as proc:
         result = proc.communicate()[0]
