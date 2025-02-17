@@ -111,7 +111,7 @@ def select_process(pids: list) -> int:
     sep    = '-'
 
     # generate list with [id, uptime]
-    uptimes = _get_uptimes(pids)
+    uptimes = get_uptimes(pids)
     table = [[_id, uptime] for _id, uptime in zip(uptimes)]
 
     _draw_table(topics, table, title, sep=sep)
