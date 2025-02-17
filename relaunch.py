@@ -88,16 +88,10 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
         print(''.join(row))
 
 
-def select_process(pids: list) -> int:
-
-    title  = "There's multiple processes with the same name"
-    topics = ["ID", "Process Uptime"]
-    sep    = '-'
-
-    # generate list with [id, uptime]
-    table = []
-    for proc_id, pid_ in enumerate(pids):
-        with sub.Popen(['ps', '-p', int(pid_), '-o', 'time'], stdout=sub.PIPE) as proc:
+def _get_uptimes(pids: list) -> list:
+    uptimes = []
+    for pid in pids:
+        with sub.Popen(['ps', '-p', int(pid), '-o', 'time'], stdout=sub.PIPE) as proc:
 
             uptime = proc.communicate()[0]
             uptime = uptime.decode()
@@ -105,7 +99,20 @@ def select_process(pids: list) -> int:
             uptime = uptime.split('\n')[1]
             uptime = uptime.strip()
 
-            table.append([proc_id, uptime])
+            uptimes.append(uptime)
+
+    return uptimes
+
+
+def select_process(pids: list) -> int:
+
+    title  = "There's multiple processes with the same name"
+    topics = ["ID", "Process Uptime"]
+    sep    = '-'
+
+    # generate list with [id, uptime]
+    uptimes = _get_uptimes(pids)
+    table = [[_id, uptime] for _id, uptime in zip(uptimes)]
 
     _draw_table(topics, table, title, sep=sep)
 
