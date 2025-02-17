@@ -1,6 +1,7 @@
 import os
 
 import unittest
+import unittest.mock
 import warnings
 
 import re
@@ -52,6 +53,21 @@ class TestGetPid(TestRelaunch):
     def test_get_pid(self):
         pid = relaunch.get_pid(' '.join(self.dummy))
         self.assertEqual(pid, [self.pid])
+
+
+class TestSelectProcess(TestRelaunch):
+    def setUp(self):
+        self.pids = [self.start_process(self.dummy) for _ in range(2)]
+
+    def tearDown(self):
+        for pid in self.pids:
+            self.kill_process(pid)
+
+    @unittest.mock.patch('builtins.input', return_value='a')
+    def test_with_invalid_input(self, mock_input):
+        with unittest.mock.patch('builtins.print') as mock_print:
+            relaunch.select_process(self.pids, _test=True)
+            mock_print.assert_called_with("Incorrect ID! Try again.")
 
 
 class TestGetUptimes(TestRelaunch):

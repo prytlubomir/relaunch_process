@@ -5,6 +5,7 @@ v1.1.1
 
 from typing import Iterable
 import subprocess as sub
+import sys
 
 
 def get_pid(process_name: str) -> list:
@@ -39,6 +40,7 @@ def kill_process(pid: int | str) -> bool:
         *  0 | False - success (no error)
         *  1 | True  - fail (wrong PID)
     '''
+    print('\n\n\n test \n\n\n')
     cmd = ['kill', str(pid)]
 
     with sub.Popen(cmd, stdout=sub.PIPE, stderr=sub.PIPE) as proc:
@@ -68,13 +70,15 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
     print(title)
     print(sep*len(title))
 
-    sizes: Iterable[int] = [max(size, key=lambda x: len(str(x))) for size in data]
+    sizes: Iterable[int] = [len(max(size, key=lambda x: len(str(x)))) for size in data]
 
     sections = []
+
     for index, topic in enumerate(topics):
         string = topic
+        sys.stdout.write(f'\n{string=}\n')
         gap = sizes[index] - len(string) + VERTICAL_GAP
-        sections.append(string+gap)
+        sections.append(string+str(gap))
 
     print(''.join(sections))
     print(sep*len(title))
@@ -104,7 +108,7 @@ def get_uptimes(pids: list) -> list:
     return uptimes
 
 
-def select_process(pids: list) -> int:
+def select_process(pids: list, _test=False) -> int:
 
     title  = "There's multiple processes with the same name"
     topics = ["ID", "Process Uptime"]
@@ -112,16 +116,19 @@ def select_process(pids: list) -> int:
 
     # generate list with [id, uptime]
     uptimes = get_uptimes(pids)
-    table = [[_id, uptime] for _id, uptime in zip(uptimes)]
+    table = [[_id, uptime] for _id, uptime in enumerate(uptimes)]
 
     _draw_table(topics, table, title, sep=sep)
 
     while True:
         pid = input("Enter ID: ")
-        if pid.isalnum():
+        if pid.isnumeric():
             if len(pids)-1 <= int(pid):
                 return pids[int(pid)]
         print("Incorrect ID! Try again.")
+        # simplify testing
+        if _test:
+            break
 
 
 def main():
