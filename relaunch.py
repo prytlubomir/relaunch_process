@@ -91,7 +91,7 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
 def _get_uptimes(pids: list) -> list:
     uptimes = []
     for pid in pids:
-        with sub.Popen(['ps', '-p', int(pid), '-o', 'time'], stdout=sub.PIPE) as proc:
+        with sub.Popen(['ps', '-p', str(pid), '-o', 'time'], stdout=sub.PIPE) as proc:
 
             uptime = proc.communicate()[0]
             uptime = uptime.decode()

@@ -1,8 +1,9 @@
 import os
-import time
 
 import unittest
 import warnings
+
+import re
 import subprocess as sub
 
 import relaunch
@@ -51,6 +52,21 @@ class TestGetPid(TestRelaunch):
     def test_get_pid(self):
         pid = relaunch.get_pid(' '.join(self.dummy))
         self.assertEqual(pid, [self.pid])
+
+
+class TestGetUptimes(TestRelaunch):
+    def setUp(self):
+        self.pids = [self.start_process(self.dummy) for _ in range(2)]
+
+    def tearDown(self):
+        for pid in self.pids:
+            self.kill_process(pid)
+
+    def test_get_uptimes(self):
+        uptimes = relaunch._get_uptimes(self.pids)
+        pattern = re.compile(r"\d+:\d{2}:\d{1,2}")
+
+        self.assertTrue(uptimes, all(map(pattern.match, uptimes)))
 
 
 
