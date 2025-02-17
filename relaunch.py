@@ -88,7 +88,7 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
         print(''.join(row))
 
 
-def _get_uptimes(pids: list) -> list:
+def get_uptimes(pids: list) -> list:
     uptimes = []
     for pid in pids:
         with sub.Popen(['ps', '-p', str(pid), '-o', 'time'], stdout=sub.PIPE) as proc:

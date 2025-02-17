@@ -63,7 +63,7 @@ class TestGetUptimes(TestRelaunch):
             self.kill_process(pid)
 
     def test_get_uptimes(self):
-        uptimes = relaunch._get_uptimes(self.pids)
+        uptimes = relaunch.get_uptimes(self.pids)
         pattern = re.compile(r"\d+:\d{2}:\d{1,2}")
 
         self.assertTrue(uptimes, all(map(pattern.match, uptimes)))
