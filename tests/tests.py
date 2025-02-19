@@ -69,10 +69,15 @@ class TestSelectProcess(TestRelaunch):
             relaunch.select_process(self.pids, _test=True)
             mock_print.assert_called_with("Incorrect ID! Try again.")
 
-    @unittest.mock.patch('builtins.input', return_value='1')
-    def test_with_valid_input(self, mock_input):
-        pid = relaunch.select_process(self.pids)
-        self.assertTrue(pid in self.pids)
+    def test_with_valid_input(self):
+        with unittest.mock.patch('builtins.input') as mock_input:
+            mock_input.return_value = '0'
+            pid = relaunch.select_process(self.pids, _test=True)
+            self.assertTrue(pid in self.pids)
+            self.tearDown()
+            self.setUp()
+            mock_input.return_value = '1'
+            pid = relaunch.select_process(self.pids, _test=True)
 
 
 class TestGetUptimes(TestRelaunch):

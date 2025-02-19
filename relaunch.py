@@ -120,7 +120,7 @@ def select_process(pids: list, _test=False) -> int:
     while True:
         pid = input("Enter ID: ")
         if pid.isnumeric():
-            if len(pids)-1 <= int(pid):
+            if len(pids)-1 >= int(pid):
                 return pids[int(pid)]
         print("Incorrect ID! Try again.")
         # simplify testing
