@@ -76,7 +76,6 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
 
     for index, topic in enumerate(topics):
         string = topic
-        sys.stdout.write(f'\n{string=}\n')
         gap = sizes[index] - len(string) + VERTICAL_GAP
         sections.append(string+str(gap))
 
@@ -116,7 +115,7 @@ def select_process(pids: list, _test=False) -> int:
 
     # generate list with [id, uptime]
     uptimes = get_uptimes(pids)
-    table = [[_id, uptime] for _id, uptime in enumerate(uptimes)]
+    table = [[str(_id), uptime] for _id, uptime in enumerate(uptimes)]
 
     _draw_table(topics, table, title, sep=sep)
 
