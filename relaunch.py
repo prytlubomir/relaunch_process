@@ -75,7 +75,7 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
     for index, topic in enumerate(topics):
         string = topic
         gap = sizes[index] - len(string) + VERTICAL_GAP
-        sections.append(string+str(gap))
+        sections.append(string+' '*gap)
 
     print(''.join(sections))
     print(sep*len(title))
