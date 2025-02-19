@@ -40,7 +40,6 @@ def kill_process(pid: int | str) -> bool:
         *  0 | False - success (no error)
         *  1 | True  - fail (wrong PID)
     '''
-    print('\n\n\n test \n\n\n')
     cmd = ['kill', str(pid)]
 
     with sub.Popen(cmd, stdout=sub.PIPE, stderr=sub.PIPE) as proc:
@@ -87,7 +86,7 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
         for index, coll in enumerate(row_):
             string = coll
             gap = sizes[index] - len(string) + VERTICAL_GAP
-            row.append(string+gap)
+            row.append(string+' '*gap)
         print(''.join(row))
 
 
