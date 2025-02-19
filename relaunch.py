@@ -5,10 +5,9 @@ v1.1.1
 
 from typing import Iterable
 import subprocess as sub
-import sys
 
 
-def get_pid(process_name: str) -> list:
+def get_pids(process_name: str) -> list:
     '''
     get_pid(process_name: str) -> int:
 
@@ -132,7 +131,7 @@ def select_process(pids: list, _test=False) -> int:
 def main():
     '''Relaunch process'''
     command = input('Enter a command to relaunch: ')
-    pids = get_pid(command)
+    pids = get_pids(command)
 
     pid = pids[0]
 

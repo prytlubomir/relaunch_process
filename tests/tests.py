@@ -40,7 +40,7 @@ class TestRelaunch(unittest.TestCase):
 
 
 
-class TestGetPid(TestRelaunch):
+class TestGetPids(TestRelaunch):
 
     def setUp(self):
         super().setUp()
@@ -51,7 +51,7 @@ class TestGetPid(TestRelaunch):
         self.kill_process(self.false_pid)
 
     def test_get_pid(self):
-        pid = relaunch.get_pid(' '.join(self.dummy))
+        pid = relaunch.get_pids(' '.join(self.dummy))
         self.assertEqual(pid, [self.pid])
 
 
@@ -68,6 +68,11 @@ class TestSelectProcess(TestRelaunch):
         with unittest.mock.patch('builtins.print') as mock_print:
             relaunch.select_process(self.pids, _test=True)
             mock_print.assert_called_with("Incorrect ID! Try again.")
+
+    @unittest.mock.patch('builtins.input', return_value='1')
+    def test_with_valid_input(self, mock_input):
+        pid = relaunch.select_process(self.pids)
+        self.assertTrue(pid in self.pids)
 
 
 class TestGetUptimes(TestRelaunch):
