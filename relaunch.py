@@ -1,6 +1,6 @@
 '''
 Relaunch process by its command.
-v1.2.0
+v1.2.1
 '''
 
 from typing import Iterable
@@ -65,9 +65,9 @@ def _draw_table(headers: Iterable, data: Iterable[Iterable], caption: str='', se
     '''
     Draws a table in the terminal.
     Args:
-     	topics - a list of titles for each respectful column
+     	headers - a list of captions for each respectful column
      	data - a list of rows
-     	title - the title above the table
+     	caption - the title above the table
      	sep - a pattern that separates the table header
     '''
     VERTICAL_GAP = 2
