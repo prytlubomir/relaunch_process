@@ -1,6 +1,6 @@
 '''
-Relaunch python process by its command.
-v1.1.1
+Relaunch process by its command.
+v1.2.0
 '''
 
 from typing import Iterable
