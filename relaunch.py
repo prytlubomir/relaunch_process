@@ -61,7 +61,7 @@ def launch_process(command: str | Iterable) -> int:
     return pid
 
 
-def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: str='-') -> None:
+def _draw_table(headers: Iterable, data: Iterable[Iterable], caption: str='', sep: str='-') -> None:
     '''
     Draws a table in the terminal.
     Args:
@@ -72,20 +72,20 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
     '''
     VERTICAL_GAP = 2
 
-    print(title)
-    print(sep*len(title))
+    print(caption)
+    print(sep*len(caption))
 
     sizes: Iterable[int] = [len(max(size, key=lambda x: len(str(x)))) for size in data]
 
     sections = []
 
-    for index, topic in enumerate(topics):
-        string = topic
+    for index, header in enumerate(headers):
+        string = header
         gap = sizes[index] - len(string) + VERTICAL_GAP
         sections.append(string+' '*gap)
 
     print(''.join(sections))
-    print(sep*len(title))
+    print(sep*len(caption))
 
     for row_ in data:
         row = []
@@ -118,15 +118,15 @@ def select_process(pids: Iterable, _test=False) -> int:
     An interface that allows the user to select one process by its uptime
     if multiple are available.
     '''
-    title  = "There's multiple processes with the same name"
-    topics = ["ID", "Process Uptime"]
+    caption  = "There's multiple processes with the same name"
+    headers = ["ID", "Process Uptime"]
     sep    = '-'
 
     # generate list with [id, uptime]
     uptimes = get_uptimes(pids)
     table = [[str(_id), uptime] for _id, uptime in enumerate(uptimes)]
 
-    _draw_table(topics, table, title, sep=sep)
+    _draw_table(headers, table, caption, sep=sep)
 
     while True:
         pid = input("Enter ID: ")
