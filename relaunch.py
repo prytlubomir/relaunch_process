@@ -62,7 +62,14 @@ def launch_process(command: str | Iterable) -> int:
 
 
 def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: str='-') -> None:
-
+    '''
+    Draws a table in the terminal.
+    Args:
+     	topics - a list of titles for each respectful column
+     	data - a list of rows
+     	title - the title above the table
+     	sep - a pattern that separates the table header
+    '''
     VERTICAL_GAP = 2
 
     print(title)
@@ -90,6 +97,7 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
 
 
 def get_uptimes(pids: list) -> list:
+    '''Get uptimes of a bunch of processes by their PIDs in respective order.'''
     uptimes = []
     for pid in pids:
         with sub.Popen(['ps', '-p', str(pid), '-o', 'time'], stdout=sub.PIPE) as proc:
@@ -106,7 +114,10 @@ def get_uptimes(pids: list) -> list:
 
 
 def select_process(pids: list, _test=False) -> int:
-
+    '''
+    An interface that allows the user to select one process by its uptime
+    if multiple are available.
+    '''
     title  = "There's multiple processes with the same name"
     topics = ["ID", "Process Uptime"]
     sep    = '-'
