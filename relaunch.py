@@ -80,7 +80,7 @@ def _draw_table(headers: Iterable, data: Iterable[Iterable], caption: str='', se
     sections = []
 
     for index, header in enumerate(headers):
-        string = header
+        string = str(header)
         gap = sizes[index] - len(string) + VERTICAL_GAP
         sections.append(string+' '*gap)
 
@@ -90,7 +90,7 @@ def _draw_table(headers: Iterable, data: Iterable[Iterable], caption: str='', se
     for row_ in data:
         row = []
         for index, coll in enumerate(row_):
-            string = coll
+            string = str(coll)
             gap = sizes[index] - len(string) + VERTICAL_GAP
             row.append(string+' '*gap)
         print(''.join(row))
