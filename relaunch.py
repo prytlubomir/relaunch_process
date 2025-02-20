@@ -96,7 +96,7 @@ def _draw_table(topics: Iterable, data: Iterable[Iterable], title: str='', sep: 
         print(''.join(row))
 
 
-def get_uptimes(pids: list) -> list:
+def get_uptimes(pids: Iterable) -> list:
     '''Get uptimes of a bunch of processes by their PIDs in respective order.'''
     uptimes = []
     for pid in pids:
@@ -113,7 +113,7 @@ def get_uptimes(pids: list) -> list:
     return uptimes
 
 
-def select_process(pids: list, _test=False) -> int:
+def select_process(pids: Iterable, _test=False) -> int:
     '''
     An interface that allows the user to select one process by its uptime
     if multiple are available.
