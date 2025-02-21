@@ -9,7 +9,7 @@ import subprocess as sub
 
 def get_pids(process_name: str) -> list:
     '''
-    get_pid(process_name: str) -> int:
+    get_pid(process_name: str) -> list:
 
     Get the PID of a process using "pgrep" command.
     '''
