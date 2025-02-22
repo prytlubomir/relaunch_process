@@ -99,7 +99,7 @@ class TestGetUptimes(TestRelaunch):
 class TestKillProcess(TestRelaunch):
 
     def test_killing_process(self):
-        self.assertEqual(relaunch.kill_process(self.pid), 0)
+        self.assertEqual(relaunch.kill_process(self.pid), None)
 
 
 
@@ -107,7 +107,7 @@ class TestKillNonexistingProcess(TestRelaunch):
 
     def test_killing_nonexisting_process(self):
         self.tearDown()
-        self.assertEqual(relaunch.kill_process(self.pid), 1)
+        self.assertIsInstance(relaunch.kill_process(self.pid), str)
 
 
 
@@ -126,3 +126,19 @@ class TestLaunch(TestRelaunch):
         result = [item.strip() for item in result.decode().split('\n')]
         self.assertTrue(len(result) > 1)
         self.assertTrue(result[1])
+
+
+class TestRelaunchProcess(TestRelaunch):
+
+    def tearDown(self):
+        super().tearDown()
+        self.kill_process(self.new_pid)
+
+    def test_success(self):
+        self.new_pid = relaunch.relaunch_process(self.pid, self.dummy)
+        self.assertIsInstance(self.new_pid, int)
+
+    def test_fail(self):
+        super().tearDown()
+        self.new_pid = relaunch.relaunch_process(self.pid, self.dummy)
+        self.assertIsInstance(self.new_pid, str)
