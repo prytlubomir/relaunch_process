@@ -1,6 +1,6 @@
 '''
 Relaunch process by its command.
-v1.2.1
+v1.2.2
 '''
 
 from typing import Iterable
@@ -29,15 +29,15 @@ def get_pids(process_name: str) -> list:
     return list(map(int, result.split('\n')))
 
 
-def kill_process(pid: int | str) -> bool:
+def kill_process(pid: int | str) -> None | str:
     '''
     kill_process(pid: int | str) -> bool:
 
     Stops a process with a specified PID.
 
     Return:
-        *  0 | False - success (no error)
-        *  1 | True  - fail (wrong PID)
+        *  None - success (no error)
+        *  error message: str - fail
     '''
     cmd = ['kill', str(pid)]
 
@@ -45,8 +45,7 @@ def kill_process(pid: int | str) -> bool:
         err = proc.communicate()[1]
 
     if err:
-        return 1
-    return 0
+        return err.decode()
 
 
 def launch_process(command: str | Iterable) -> int:
@@ -59,6 +58,24 @@ def launch_process(command: str | Iterable) -> int:
     pid = proc.pid
 
     return pid
+
+
+def relaunch_process(pid: int, command: list | str) -> int | str: # str = error#
+    '''
+    relaunch(pid: int, command: list | str) -> int | str:
+
+    Kill process by "pid" and launch "command".
+
+    Return:
+        PID: int - process ID of the launched process (success)
+        error message: str - killing the process wasn't successfull
+    '''
+    status = kill_process(pid)
+    if status:
+        return status
+    new_pid = launch_process(command)
+
+    return new_pid
 
 
 def _draw_table(headers: Iterable, data: Iterable[Iterable], caption: str='', sep: str='-') -> None:
@@ -149,10 +166,9 @@ def main():
     if len(pids) > 1:
         pid = select_process(pids)
 
-    kill_process(pid)
-    new_pid = launch_process(command)
+    result = relaunch_process(pid, command)
 
-    print(new_pid)
+    print(result)
 
 
 if __name__ == "__main__":
