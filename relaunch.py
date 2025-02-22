@@ -129,10 +129,10 @@ def select_process(pids: Iterable, _test=False) -> int:
     _draw_table(headers, table, caption, sep=sep)
 
     while True:
-        pid = input("Enter ID: ")
-        if pid.isnumeric():
-            if len(pids)-1 >= int(pid):
-                return pids[int(pid)]
+        choice = input("Enter ID: ")
+        if choice.isnumeric():
+            if len(pids)-1 >= int(choice):
+                return pids[int(choice)]
         print("Incorrect ID! Try again.")
         # simplify testing
         if _test:
