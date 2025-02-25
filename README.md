@@ -6,7 +6,13 @@ A simple tool for restarting Linux processes.
 Open `terminal` and run the command `sudo apt install python3`.
 
 ## Usage
-You can use the program in two ways.
+You can use the program in three ways.<br/>
+<small>Use the exact command, not an alias.</small>
+
+ - ### Pass the command as an argument
+     `python3 relaunch.py "your command"`
+      #### Example:
+       python3 relaunch.py "python3.11 server.py
 
  - ### Enter the command manually
    1. Run `python3 relauch.py` in the program directory.

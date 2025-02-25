@@ -1,10 +1,11 @@
 '''
 Relaunch process by its command.
-v1.2.2
+v1.3.0
 '''
 
 from typing import Iterable
 import subprocess as sub
+import sys
 
 
 def get_pids(process_name: str) -> list:
@@ -158,11 +159,14 @@ def select_process(pids: Iterable, _test=False) -> int:
 
 def main():
     '''Relaunch process'''
-    command = input('Enter a command to relaunch: ')
+
+    if len(sys.argv) > 1:
+        command = sys.argv[1]
+    else:
+        command = input('Enter a command to relaunch: ')
+
     pids = get_pids(command)
-
     pid = pids[0]
-
     if len(pids) > 1:
         pid = select_process(pids)
 
