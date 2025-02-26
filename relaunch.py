@@ -1,6 +1,6 @@
 '''
 Relaunch process by its command.
-v1.3.0
+v1.3.1
 '''
 
 from typing import Iterable
@@ -12,7 +12,8 @@ def get_pids(process_name: str) -> list:
     '''
     get_pid(process_name: str) -> list:
 
-    Get the PID of a process using "pgrep" command.
+    Get PIDs of processes with the specified process name
+    using the "pgrep" command.
     '''
     # pgrep - displays processes selected by regex
     # -f - use full process name to match
@@ -25,7 +26,7 @@ def get_pids(process_name: str) -> list:
     result = result.decode().strip()
 
     if not result:
-        raise ValueError(f'No process with name "{process_name}".')
+        return []
 
     return list(map(int, result.split('\n')))
 
@@ -166,6 +167,10 @@ def main():
         command = input('Enter a command to relaunch: ')
 
     pids = get_pids(command)
+    if not pids:
+        print(f'No process with name "{command}".')
+        sys.exit()
+
     pid = pids[0]
     if len(pids) > 1:
         pid = select_process(pids)
