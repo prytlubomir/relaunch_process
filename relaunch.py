@@ -1,6 +1,6 @@
 '''
 Relaunch process by its command.
-v1.3.1
+v1.3.2
 '''
 
 from typing import Iterable
@@ -172,12 +172,15 @@ def main():
         sys.exit()
 
     pid = pids[0]
-    if len(pids) > 1:
-        pid = select_process(pids)
+    if len(pids) > 1 and not '-a' in sys.argv:
+        pids = [select_process(pids)]
 
-    result = relaunch_process(pid, command)
+    new_pids = []
+    for pid in pids:
+        new_pid = relaunch_process(pid, command)
+        new_pids.append(new_pid)
 
-    print(result)
+    print(*new_pids, sep='\n')
 
 
 if __name__ == "__main__":
