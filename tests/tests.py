@@ -51,8 +51,13 @@ class TestGetPids(TestRelaunch):
         self.kill_process(self.false_pid)
 
     def test_get_pid(self):
-        pid = relaunch.get_pids(' '.join(self.dummy))
-        self.assertEqual(pid, [self.pid])
+        pids = relaunch.get_pids(' '.join(self.dummy))
+        self.assertEqual(pids, [self.pid])
+
+    def test_get_nonexisting_pid(self):
+        self.tearDown()
+        pids = relaunch.get_pids(' '.join(self.dummy))
+        self.assertEqual(pids, [])
 
 
 class TestSelectProcess(TestRelaunch):
